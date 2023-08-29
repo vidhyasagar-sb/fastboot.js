@@ -578,7 +578,7 @@ export class FastbootDevice {
             splits += 1;
             sentBytes += split.bytes;
         }
-
+        onProgress(1)
         common.logDebug(`Flashed ${partition} with ${splits} split(s)`);
     }
 

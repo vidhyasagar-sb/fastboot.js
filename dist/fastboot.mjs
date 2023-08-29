@@ -182,7 +182,7 @@ function parseChunkHeader(buffer) {
         /* 2: reserved, 16 bits */
         blocks: view.getUint32(4, true),
         dataBytes: view.getUint32(8, true) - CHUNK_HEADER_SIZE,
-        data: null,
+        data: null, // to be populated by consumer
     };
 }
 function calcChunksBlockSize(chunks) {
@@ -8517,7 +8517,7 @@ class FastbootDevice {
         }
         let downloadSize = parseInt(downloadResp.dataSize, 16);
         if (downloadSize !== buffer.byteLength) {
-            throw new FastbootError("FAIL", `Bootloader wants ${buffer.byteLength} bytes, requested to send ${buffer.byteLength} bytes`);
+            throw new FastbootError("FAIL", `Bootloader wants ${downloadSize} bytes, requested to send ${buffer.byteLength} bytes`);
         }
         logDebug(`Sending payload: ${buffer.byteLength} bytes`);
         await this._sendRawPayload(buffer, onProgress);
@@ -8600,6 +8600,7 @@ class FastbootDevice {
             splits += 1;
             sentBytes += split.bytes;
         }
+        onProgress(1);
         logDebug(`Flashed ${partition} with ${splits} split(s)`);
     }
     /**
