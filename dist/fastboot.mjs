@@ -182,7 +182,7 @@ function parseChunkHeader(buffer) {
         /* 2: reserved, 16 bits */
         blocks: view.getUint32(4, true),
         dataBytes: view.getUint32(8, true) - CHUNK_HEADER_SIZE,
-        data: null, // to be populated by consumer
+        data: null,
     };
 }
 function calcChunksBlockSize(chunks) {
